@@ -2,6 +2,9 @@ package com.desafio.backend.services;
 
 import com.desafio.backend.exceptions.InvalidCredentialsException;
 import com.desafio.backend.entities.Users;
+import com.desafio.backend.middlewares.auth.Middleware;
+import com.desafio.backend.middlewares.auth.PasswordMiddleware;
+import com.desafio.backend.middlewares.auth.UsernameMiddleware;
 import com.desafio.backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +20,17 @@ public class UserService {
     }
 
     public Users login(Users user){
-        Users userFound = userRepository.findByUsername(user.getUsername());
-        if(userFound != null && userFound.getPassword().equals(user.getPassword())){
-            return userFound;
-        }
+//        Users userFound = userRepository.findByUsername(user.getUsername());
+//        if(userFound != null && userFound.getPassword().equals(user.getPassword())){
+//            return userFound;
+//        }
+
+        Middleware middleware = Middleware.link(
+                new UsernameMiddleware(userRepository),
+                new PasswordMiddleware(user));
+        Users authenticatedUser = middleware.check(user);
+        if(authenticatedUser != null)
+            return authenticatedUser;
         throw new InvalidCredentialsException("Invalid username or password.");
     }
 }
