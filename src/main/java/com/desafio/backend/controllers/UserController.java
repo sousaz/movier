@@ -1,5 +1,7 @@
 package com.desafio.backend.controllers;
 
+import com.desafio.backend.dto.UserLoginRequestDTO;
+import com.desafio.backend.dto.UserLoginResponseDTO;
 import com.desafio.backend.exceptions.InvalidCredentialsException;
 import com.desafio.backend.entities.Users;
 import com.desafio.backend.services.UserService;
@@ -18,12 +20,12 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public Users register(@RequestBody Users user){
+    public UserLoginResponseDTO register(@RequestBody UserLoginRequestDTO user){
         return userService.register(user);
     }
 
     @PostMapping("/login")
-    public Users login(@RequestBody Users user){
+    public UserLoginResponseDTO login(@RequestBody UserLoginRequestDTO user){
             return userService.login(user);
     }
 }

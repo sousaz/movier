@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Setter
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 public class Reviews {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     @Column(nullable = false)
     private String text;
@@ -21,12 +22,12 @@ public class Reviews {
     private Double rating;
 
     @Column(nullable = false)
-    private LocalDateTime watched_at;
+    private LocalDate watchedAt;
 
     @Column(nullable = false)
-    private Long movie_id;
+    private Long movieId;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "userId")
     private Users user;
 }

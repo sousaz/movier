@@ -1,10 +1,13 @@
 package com.desafio.backend.controllers;
 
+import com.desafio.backend.dto.ReviewCreationRequestDTO;
+import com.desafio.backend.dto.ReviewCreationResponseDTO;
 import com.desafio.backend.entities.Reviews;
 import com.desafio.backend.services.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -18,8 +21,7 @@ public class ReviewController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Reviews createReview(@RequestBody Reviews review){
-        System.out.println(review.getUser());
+    public ReviewCreationResponseDTO createReview(@RequestBody ReviewCreationRequestDTO review){
         return this.reviewService.createReview(review);
     }
 

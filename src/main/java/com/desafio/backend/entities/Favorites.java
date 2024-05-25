@@ -16,6 +16,6 @@ public class Favorites {
     private Long movie_id;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "userId")
     private Users user;
 }
