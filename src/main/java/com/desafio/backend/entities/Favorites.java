@@ -12,10 +12,10 @@ public class Favorites {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column
-    private Long movie_id;
+    @Column(nullable = false)
+    private Long movieId;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private Users user;
 }

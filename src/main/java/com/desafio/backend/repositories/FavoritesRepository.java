@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface FavoritesRepository extends JpaRepository<Favorites, UUID> {
+    Favorites findByMovieIdAndUserId(Long movieId, UUID userId);
 }

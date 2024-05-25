@@ -28,6 +28,6 @@ public class Reviews {
     private Long movieId;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private Users user;
 }
