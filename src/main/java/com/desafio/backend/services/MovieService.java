@@ -1,5 +1,10 @@
 package com.desafio.backend.services;
 
+import com.desafio.backend.interfaces.Movie;
+import com.desafio.backend.models.BasicMovie;
+import com.desafio.backend.models.MoviesResponse;
+import com.desafio.backend.models.decorators.MovieWithFavoriteDecorator;
+import com.desafio.backend.models.decorators.MovieWithReviewsDecorator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +15,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.desafio.backend.models.Details;
 import com.desafio.backend.models.Movies;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MovieService {
@@ -27,6 +36,22 @@ public class MovieService {
     public Movies listMostPopularMovie(){
         String url = "https://api.themoviedb.org/3/movie/popular?api_key="+apiKey+"&language=pt-BR";
         return makeRequest(url, Movies.class);
+    }
+
+    public List<Movie> listMostPopularMovie1(){
+        String url = "https://api.themoviedb.org/3/movie/popular?api_key="+apiKey+"&language=pt-BR";
+        Movies movies = makeRequest(url, Movies.class);
+        List<Movie> moviesResponse = new ArrayList<>();
+        movies.getMovies().forEach(movie -> {
+            Movie movieProcess = new BasicMovie(movie);
+            movieProcess = new MovieWithFavoriteDecorator(movieProcess, true);
+            if(movie.getId() == 823464){
+                movieProcess = new MovieWithReviewsDecorator(movieProcess, new ArrayList<>());
+            }
+            moviesResponse.add(movieProcess);
+
+        });
+        return moviesResponse;
     }
 
     public Details getDetailsOfMovie(Long id){
