@@ -2,7 +2,6 @@ package com.desafio.backend.services;
 
 import com.desafio.backend.interfaces.Movie;
 import com.desafio.backend.models.BasicMovie;
-import com.desafio.backend.models.MoviesResponse;
 import com.desafio.backend.models.decorators.MovieWithFavoriteDecorator;
 import com.desafio.backend.models.decorators.MovieWithReviewsDecorator;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,6 @@ import com.desafio.backend.models.Movies;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class MovieService {
@@ -49,7 +47,6 @@ public class MovieService {
                 movieProcess = new MovieWithReviewsDecorator(movieProcess, new ArrayList<>());
             }
             moviesResponse.add(movieProcess);
-
         });
         return moviesResponse;
     }

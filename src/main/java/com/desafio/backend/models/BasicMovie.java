@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@JsonTypeName("basicMovie")
+@Getter
 public class BasicMovie implements Movie{
     private Long id;
     @JsonProperty("poster_path")
@@ -30,15 +30,5 @@ public class BasicMovie implements Movie{
         this.originalTitle = movie.getOriginalTitle();
         this.overview = movie.getOverview();
         this.releaseDate = movie.getReleaseDate();
-    }
-
-    @Override
-    public boolean isFavorited() {
-        return false;
-    }
-
-    @Override
-    public List<ReviewCreationResponseDTO> getReviews() {
-        return new ArrayList<>();
     }
 }

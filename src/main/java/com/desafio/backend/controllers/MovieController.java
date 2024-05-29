@@ -38,9 +38,9 @@ public class MovieController {
         return movieService.getDetailsOfMovie(id);
     }
 
-    @PostMapping
-    public Movies searchMovies(@RequestBody BasicMovie movie){
-        return movieService.searchMovies(movie.getTitle());
-    }
+//    @PostMapping
+//    public Movies searchMovies(@RequestBody BasicMovie movie){
+//        return movieService.searchMovies(movie.getTitle());
+//    }
     
 }
