@@ -1,9 +1,8 @@
 package com.desafio.backend.services;
 
+import com.desafio.backend.dto.ReviewCreationResponseDTO;
 import com.desafio.backend.interfaces.Movie;
-import com.desafio.backend.models.BasicMovie;
-import com.desafio.backend.models.decorators.MovieWithFavoriteDecorator;
-import com.desafio.backend.models.decorators.MovieWithReviewsDecorator;
+import com.desafio.backend.models.factory.MovieFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,12 +40,12 @@ public class MovieService {
         Movies movies = makeRequest(url, Movies.class);
         List<Movie> moviesResponse = new ArrayList<>();
         movies.getMovies().forEach(movie -> {
-            Movie movieProcess = new BasicMovie(movie);
-            movieProcess = new MovieWithFavoriteDecorator(movieProcess, true);
+            boolean favorited = true;
+            List<ReviewCreationResponseDTO> reviews = new ArrayList<>();
             if(movie.getId() == 823464){
-                movieProcess = new MovieWithReviewsDecorator(movieProcess, new ArrayList<>());
+                favorited = false;
             }
-            moviesResponse.add(movieProcess);
+        moviesResponse.add(MovieFactory.getinstance(movie, favorited, reviews));
         });
         return moviesResponse;
     }
