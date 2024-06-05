@@ -36,12 +36,23 @@ public class ReviewService {
             foundReview.setRating(newReview.getRating());
             foundReview.setUser(user);
             return reviewMapper.toDTO(reviewRepository.save(foundReview));
-
         }
         return reviewMapper.toDTO(reviewRepository.save(newReview));
     }
 
     public List<Reviews> listAllReviews(){
         return reviewRepository.findAll();
+    }
+
+    public List<ReviewCreationResponseDTO> listAllReviewsByMovieId(Long movieId){
+        List<ReviewCreationResponseDTO> reviews = reviewMapper.toDTOs(reviewRepository.findByMovieId(movieId));
+        if(reviews.isEmpty())
+            return null;
+        return reviews;
+    }
+
+    public double calculateAverageRating(Long movieId) {
+        List<Reviews> reviews = reviewRepository.findByMovieId(movieId);
+        return reviews.stream().mapToDouble(Reviews::getRating).average().orElse(0.0);
     }
 }

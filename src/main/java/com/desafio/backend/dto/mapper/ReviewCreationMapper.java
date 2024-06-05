@@ -2,11 +2,13 @@ package com.desafio.backend.dto.mapper;
 
 import com.desafio.backend.dto.ReviewCreationRequestDTO;
 import com.desafio.backend.dto.ReviewCreationResponseDTO;
+import com.desafio.backend.dto.ReviewResponseDTO;
 import com.desafio.backend.entities.Reviews;
 import com.desafio.backend.entities.Users;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ReviewCreationMapper {
@@ -32,5 +34,9 @@ public class ReviewCreationMapper {
         if(review == null)
             return null;
         return new ReviewCreationResponseDTO(review.getId(), review.getText(), review.getRating(), review.getMovieId(), review.getWatchedAt(), userMapper.toDTO(review.getUser()));
+    }
+
+    public List<ReviewCreationResponseDTO> toDTOs(List<Reviews> reviews){
+        return reviews.stream().map(this::toDTO).collect(Collectors.toList());
     }
 }

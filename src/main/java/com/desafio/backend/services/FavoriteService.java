@@ -9,6 +9,8 @@ import com.desafio.backend.repositories.FavoritesRepository;
 import com.desafio.backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class FavoriteService {
     private final FavoritesRepository favoriteRepository;
@@ -33,5 +35,10 @@ public class FavoriteService {
         } catch (Exception e) {
             throw new UsernameAlreadyExistsException("Error while toggling favorite");
         }
+    }
+
+    public boolean getFavorite(UUID userId, Long movieId) {
+        Favorites favorite = favoriteRepository.findByMovieIdAndUserId(movieId, userId);
+        return favorite != null;
     }
 }

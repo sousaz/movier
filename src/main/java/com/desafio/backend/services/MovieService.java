@@ -1,6 +1,7 @@
 package com.desafio.backend.services;
 
 import com.desafio.backend.dto.ReviewCreationResponseDTO;
+import com.desafio.backend.entities.Reviews;
 import com.desafio.backend.interfaces.Movie;
 import com.desafio.backend.models.factory.MovieFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +17,18 @@ import com.desafio.backend.models.Movies;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MovieService {
     private RestTemplate restTemplate;
+    private final ReviewService reviewService;
+    private  final FavoriteService favoriteService;
 
-    public MovieService(RestTemplate restTemplate){
+    public MovieService(RestTemplate restTemplate, ReviewService reviewService, FavoriteService favoriteService){
         this.restTemplate = restTemplate;
+        this.reviewService = reviewService;
+        this.favoriteService = favoriteService;
     }
 
     @Value("${apiKey}")
@@ -30,22 +36,15 @@ public class MovieService {
     @Value("${apiToken}")
     private String apiToken;
 
-    public Movies listMostPopularMovie(){
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key="+apiKey+"&language=pt-BR";
-        return makeRequest(url, Movies.class);
-    }
-
-    public List<Movie> listMostPopularMovie1(){
+    public List<Movie> listMostPopularMovie(UUID userId){
         String url = "https://api.themoviedb.org/3/movie/popular?api_key="+apiKey+"&language=pt-BR";
         Movies movies = makeRequest(url, Movies.class);
         List<Movie> moviesResponse = new ArrayList<>();
         movies.getMovies().forEach(movie -> {
-            boolean favorited = true;
-            List<ReviewCreationResponseDTO> reviews = new ArrayList<>();
-            if(movie.getId() == 823464){
-                favorited = false;
-            }
-        moviesResponse.add(MovieFactory.getinstance(movie, favorited, reviews));
+            boolean favorited = this.favoriteService.getFavorite(userId, movie.getId());
+            List<ReviewCreationResponseDTO> reviews = this.reviewService.listAllReviewsByMovieId(movie.getId());
+            double averageRating = this.reviewService.calculateAverageRating(movie.getId());
+            moviesResponse.add(MovieFactory.getinstance(movie, favorited, reviews));
         });
         return moviesResponse;
     }
