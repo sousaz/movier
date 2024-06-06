@@ -14,4 +14,5 @@ public class MovieApiResponse {
     private String overview;
     @JsonProperty("release_date")
     private String releaseDate;
+    private double averageRating;
 }

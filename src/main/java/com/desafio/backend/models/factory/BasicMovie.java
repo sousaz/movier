@@ -16,6 +16,7 @@ public class BasicMovie implements Movie {
     private String overview;
     @JsonProperty("release_date")
     private String releaseDate;
+    private double averageRating;
 
     public BasicMovie(MovieApiResponse movie) {
         this.id = movie.getId();
@@ -24,5 +25,6 @@ public class BasicMovie implements Movie {
         this.originalTitle = movie.getOriginalTitle();
         this.overview = movie.getOverview();
         this.releaseDate = movie.getReleaseDate();
+        this.averageRating = movie.getAverageRating();
     }
 }

@@ -19,6 +19,7 @@ public class MovieWithReview implements Movie {
     private String overview;
     @JsonProperty("release_date")
     private String releaseDate;
+    private double averageRating;
     private List<ReviewCreationResponseDTO> reviews;
 
     public MovieWithReview(MovieApiResponse movie, List<ReviewCreationResponseDTO> reviews) {
@@ -29,5 +30,6 @@ public class MovieWithReview implements Movie {
         this.overview = movie.getOverview();
         this.releaseDate = movie.getReleaseDate();
         this.reviews = reviews;
+        this.averageRating = movie.getAverageRating();
     }
 }

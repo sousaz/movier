@@ -19,6 +19,7 @@ public class MovieWithFavoritedAndReview implements Movie {
     private String overview;
     @JsonProperty("release_date")
     private String releaseDate;
+    private double averageRating;
     private boolean favorited;
     private List<ReviewCreationResponseDTO> reviews;
 
@@ -31,5 +32,6 @@ public class MovieWithFavoritedAndReview implements Movie {
         this.releaseDate = movie.getReleaseDate();
         this.reviews = reviews;
         this.favorited = favorited;
+        this.averageRating = movie.getAverageRating();
     }
 }

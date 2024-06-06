@@ -43,7 +43,7 @@ public class MovieService {
         movies.getMovies().forEach(movie -> {
             boolean favorited = this.favoriteService.getFavorite(userId, movie.getId());
             List<ReviewCreationResponseDTO> reviews = this.reviewService.listAllReviewsByMovieId(movie.getId());
-            double averageRating = this.reviewService.calculateAverageRating(movie.getId());
+            movie.setAverageRating(this.reviewService.calculateAverageRating(movie.getId()));
             moviesResponse.add(MovieFactory.getinstance(movie, favorited, reviews));
         });
         return moviesResponse;

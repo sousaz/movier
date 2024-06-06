@@ -16,6 +16,7 @@ public class MovieWithFavorited implements Movie {
     private String overview;
     @JsonProperty("release_date")
     private String releaseDate;
+    private double averageRating;
     private boolean favorited;
 
     public MovieWithFavorited(MovieApiResponse movie, boolean favorited) {
@@ -26,5 +27,6 @@ public class MovieWithFavorited implements Movie {
         this.overview = movie.getOverview();
         this.releaseDate = movie.getReleaseDate();
         this.favorited = favorited;
+        this.averageRating = movie.getAverageRating();
     }
 }

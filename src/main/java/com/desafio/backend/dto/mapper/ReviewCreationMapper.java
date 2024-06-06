@@ -2,7 +2,6 @@ package com.desafio.backend.dto.mapper;
 
 import com.desafio.backend.dto.ReviewCreationRequestDTO;
 import com.desafio.backend.dto.ReviewCreationResponseDTO;
-import com.desafio.backend.dto.ReviewResponseDTO;
 import com.desafio.backend.entities.Reviews;
 import com.desafio.backend.entities.Users;
 import org.springframework.stereotype.Component;
