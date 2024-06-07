@@ -1,6 +1,7 @@
 package com.desafio.backend.services;
 
 import com.desafio.backend.dto.ReviewCreationResponseDTO;
+import com.desafio.backend.dto.SearchRequestDTO;
 import com.desafio.backend.entities.Reviews;
 import com.desafio.backend.interfaces.Movie;
 import com.desafio.backend.models.factory.MovieFactory;
@@ -54,9 +55,17 @@ public class MovieService {
         return makeRequest(url, Details.class);
     }
 
-    public Movies searchMovies(String value){
-        String url = "https://api.themoviedb.org/3/search/movie?query="+value+"&language=pt-BR?api_key="+apiKey;
-        return makeRequest(url, Movies.class);
+    public List<Movie> searchMovies(SearchRequestDTO search){
+        String url = "https://api.themoviedb.org/3/search/movie?query="+search.search()+"&language=pt-BR?api_key="+apiKey;
+        Movies movies = makeRequest(url, Movies.class);
+        List<Movie> moviesResponse = new ArrayList<>();
+        movies.getMovies().forEach(movie -> {
+            boolean favorited = this.favoriteService.getFavorite(search.userId(), movie.getId());
+            List<ReviewCreationResponseDTO> reviews = this.reviewService.listAllReviewsByMovieId(movie.getId());
+            movie.setAverageRating(this.reviewService.calculateAverageRating(movie.getId()));
+            moviesResponse.add(MovieFactory.getinstance(movie, favorited, reviews));
+        });
+        return moviesResponse;
     }
 
     private <T> T makeRequest(String url, Class<T> responseType) {

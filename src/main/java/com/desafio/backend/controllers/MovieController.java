@@ -1,6 +1,9 @@
 package com.desafio.backend.controllers;
 
+import com.desafio.backend.dto.SearchRequestDTO;
 import com.desafio.backend.interfaces.Movie;
+import com.desafio.backend.models.MovieApiResponse;
+import com.desafio.backend.models.Movies;
 import org.springframework.web.bind.annotation.*;
 
 import com.desafio.backend.models.Details;
@@ -30,9 +33,14 @@ public class MovieController {
 //        return movieService.getDetailsOfMovie(id);
 //    }
 
-//    @PostMapping
-//    public Movies searchMovies(@RequestBody BasicMovie movie){
-//        return movieService.searchMovies(movie.getTitle());
-//    }
+    @PostMapping
+    public List<Movie> searchMovies(@RequestBody SearchRequestDTO search){
+        return movieService.searchMovies(search);
+    }
+
+    @GetMapping("/favorite/{id}")
+    public List<Movie> favoriteMovie(@RequestParam UUID id){
+        return movieService.favoriteMovie(id);
+    }
     
 }
