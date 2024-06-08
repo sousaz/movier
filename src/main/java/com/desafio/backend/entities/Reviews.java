@@ -15,10 +15,10 @@ public class Reviews {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String text;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double rating;
 
     @Column(nullable = false)
@@ -26,6 +26,12 @@ public class Reviews {
 
     @Column(nullable = false)
     private Long movieId;
+
+    @Column(nullable = false)
+    private String poster_Path;
+
+    @Column(nullable = false)
+    private String release_date;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)

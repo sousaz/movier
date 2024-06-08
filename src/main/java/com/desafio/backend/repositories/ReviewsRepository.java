@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface ReviewsRepository extends JpaRepository<Reviews, UUID> {
     Reviews findByMovieIdAndUserId(Long movieId, UUID userId);
     List<Reviews> findByMovieId(Long movieId);
+
+    List<Reviews> findByUserIdAndWatchedAtIsNotNull(UUID userId);
 }

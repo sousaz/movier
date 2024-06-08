@@ -1,9 +1,15 @@
 package com.desafio.backend.services;
 
+import com.desafio.backend.dto.FavoriteToggleDTO;
 import com.desafio.backend.dto.ReviewCreationResponseDTO;
 import com.desafio.backend.dto.SearchRequestDTO;
+import com.desafio.backend.dto.WatchedDTO;
+import com.desafio.backend.dto.mapper.FavoriteToggleMapper;
+import com.desafio.backend.dto.mapper.WatchedMapper;
+import com.desafio.backend.entities.Favorites;
 import com.desafio.backend.entities.Reviews;
 import com.desafio.backend.interfaces.Movie;
+import com.desafio.backend.models.MovieApiResponse;
 import com.desafio.backend.models.factory.MovieFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -25,11 +31,16 @@ public class MovieService {
     private RestTemplate restTemplate;
     private final ReviewService reviewService;
     private  final FavoriteService favoriteService;
+    private final FavoriteToggleMapper favoriteMapper;
 
-    public MovieService(RestTemplate restTemplate, ReviewService reviewService, FavoriteService favoriteService){
+    private final WatchedMapper watchedMapper;
+
+    public MovieService(RestTemplate restTemplate, ReviewService reviewService, FavoriteService favoriteService, FavoriteToggleMapper favoriteMapper, WatchedMapper watchedMapper){
         this.restTemplate = restTemplate;
         this.reviewService = reviewService;
         this.favoriteService = favoriteService;
+        this.favoriteMapper = favoriteMapper;
+        this.watchedMapper = watchedMapper;
     }
 
     @Value("${apiKey}")
@@ -50,9 +61,13 @@ public class MovieService {
         return moviesResponse;
     }
 
-    public Details getDetailsOfMovie(Long id){
+    public Movie getDetailsOfMovie(Long id, UUID userId){
         String url = "https://api.themoviedb.org/3/movie/"+id+"?api_key="+apiKey+"&language=pt-BR";
-        return makeRequest(url, Details.class);
+        MovieApiResponse movie =  makeRequest(url, MovieApiResponse.class);
+        boolean favorited = this.favoriteService.getFavorite(userId, movie.getId());
+        List<ReviewCreationResponseDTO> reviews = this.reviewService.listAllReviewsByMovieId(movie.getId());
+        movie.setAverageRating(this.reviewService.calculateAverageRating(movie.getId()));
+        return MovieFactory.getinstance(movie, favorited, reviews);
     }
 
     public List<Movie> searchMovies(SearchRequestDTO search){
@@ -66,6 +81,20 @@ public class MovieService {
             moviesResponse.add(MovieFactory.getinstance(movie, favorited, reviews));
         });
         return moviesResponse;
+    }
+
+    public List<FavoriteToggleDTO> favoriteMovie(UUID id){
+        return this.favoriteMapper.toDTOs(this.favoriteService.favoriteMovies(id));
+    }
+
+    public List<WatchedDTO> watchedMovie(UUID id){
+        List<Reviews> reviews = this.reviewService.watchedMovies(id);
+        List<WatchedDTO> watchedMovies = new ArrayList<>();
+        reviews.forEach(review -> {
+            boolean favorited = this.favoriteService.getFavorite(id, review.getMovieId());
+            watchedMovies.add(watchedMapper.toDTO(review, favorited));
+        });
+        return watchedMovies;
     }
 
     private <T> T makeRequest(String url, Class<T> responseType) {

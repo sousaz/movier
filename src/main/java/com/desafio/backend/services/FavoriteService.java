@@ -9,6 +9,7 @@ import com.desafio.backend.repositories.FavoritesRepository;
 import com.desafio.backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -40,5 +41,9 @@ public class FavoriteService {
     public boolean getFavorite(UUID userId, Long movieId) {
         Favorites favorite = favoriteRepository.findByMovieIdAndUserId(movieId, userId);
         return favorite != null;
+    }
+
+    public List<Favorites> favoriteMovies(UUID userId) {
+        return favoriteRepository.findByUserId(userId);
     }
 }

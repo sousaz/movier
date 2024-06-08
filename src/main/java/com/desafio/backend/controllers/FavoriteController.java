@@ -18,10 +18,7 @@ public class FavoriteController {
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void toggleFavorite(@RequestBody FavoriteToggleDTO favorites) {
-        Favorites response = favoriteService.toggleFavorite(favorites);
-        if(response == null) {
-            throw new UsernameAlreadyExistsException("Error while toggling favorite");
-        }
+        this.favoriteService.toggleFavorite(favorites);
     }
 
 }

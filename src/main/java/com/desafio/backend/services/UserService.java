@@ -28,7 +28,6 @@ public class UserService {
             throw new UsernameAlreadyExistsException("Username already exists.");
         }
     }
-
     public UserLoginResponseDTO login(UserLoginRequestDTO user){
 
         Middleware middleware = Middleware.link(

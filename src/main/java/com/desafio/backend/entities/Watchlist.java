@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
-public class Favorites {
+@Setter
+public class Watchlist {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

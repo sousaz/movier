@@ -9,8 +9,9 @@ import com.desafio.backend.repositories.ReviewsRepository;
 import com.desafio.backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ReviewService {
@@ -35,6 +36,8 @@ public class ReviewService {
             foundReview.setMovieId(newReview.getMovieId());
             foundReview.setRating(newReview.getRating());
             foundReview.setUser(user);
+            foundReview.setPoster_Path(newReview.getPoster_Path());
+            foundReview.setRelease_date(newReview.getRelease_date());
             return reviewMapper.toDTO(reviewRepository.save(foundReview));
         }
         return reviewMapper.toDTO(reviewRepository.save(newReview));
@@ -50,6 +53,21 @@ public class ReviewService {
             return null;
         return reviews;
     }
+
+    public List<Reviews> watchedMovies(UUID userId){
+        return reviewRepository.findByUserIdAndWatchedAtIsNotNull(userId);
+    }
+
+    public ReviewCreationResponseDTO updateRating(UUID userId, Long movieId, Double rating){
+        Users user = userRepository.findById(userId);
+        Reviews foundReview = reviewRepository.findByMovieIdAndUserId(movieId, user.getId());
+        if(foundReview != null){
+            foundReview.setRating(rating);
+            return reviewMapper.toDTO(reviewRepository.save(foundReview));
+        }
+        return null;
+    }
+
 
     public double calculateAverageRating(Long movieId) {
         List<Reviews> reviews = reviewRepository.findByMovieId(movieId);
