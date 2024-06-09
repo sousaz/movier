@@ -5,11 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
-public interface FavoritesRepository extends JpaRepository<Favorites, UUID> {
-    Favorites findByMovieIdAndUserId(Long movieId, UUID userId);
+public interface FavoritesRepository extends JpaRepository<Favorites, Long> {
+    Favorites findByMovieIdAndUserId(Long movieId, Long userId);
 
-    List<Favorites> findByUserId(UUID userId);
+    List<Favorites> findByUserId(Long userId);
 }

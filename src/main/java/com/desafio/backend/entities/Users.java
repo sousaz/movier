@@ -4,21 +4,21 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.UUID;
-
 @Entity
 @Getter
 @Setter
 public class Users {
     @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String email;
 
 }

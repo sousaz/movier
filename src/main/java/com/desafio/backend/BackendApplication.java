@@ -16,17 +16,18 @@ public class BackendApplication {
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
-	@Bean
-		// controla o ciclo de vida
-	CommandLineRunner initDatabase(UserRepository userRepository){
-		return args -> {
-			userRepository.deleteAll();
-			Users u = new Users();
-			u.setId(UUID.fromString("7a9de783-5167-44da-baf0-e53f558f404e"));
-			u.setUsername("sosa");
-			u.setPassword("1234");
-			userRepository.save(u);
-		};
-	}
+//	@Bean
+//		// controla o ciclo de vida
+//	CommandLineRunner initDatabase(UserRepository userRepository){
+//		return args -> {
+//			userRepository.deleteAll();
+//			Users u = new Users();
+//			u.setId(UUID.fromString("7a9de783-5167-44da-baf0-e53f558f404e"));
+//			u.setUsername("sosa");
+//			u.setPassword("1234");
+//			u.setEmail("gabrielsousa2003gsa@gmail.com");
+//			userRepository.save(u);
+//		};
+//	}
 
 }

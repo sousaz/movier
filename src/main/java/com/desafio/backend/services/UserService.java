@@ -12,6 +12,8 @@ import com.desafio.backend.middlewares.auth.UsernameMiddleware;
 import com.desafio.backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.lang.Long;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -25,11 +27,10 @@ public class UserService {
         try {
             return userMapper.toDTO(userRepository.save(userMapper.toEntity(user)));
         } catch (Exception e) {
-            throw new UsernameAlreadyExistsException("Username already exists.");
+            throw new UsernameAlreadyExistsException(e.getMessage());
         }
     }
     public UserLoginResponseDTO login(UserLoginRequestDTO user){
-
         Middleware middleware = Middleware.link(
                 new UsernameMiddleware(userRepository),
                 new PasswordMiddleware(userMapper.toEntity(user)));
@@ -37,5 +38,10 @@ public class UserService {
         if(authenticatedUser != null)
             return userMapper.toDTO(authenticatedUser);
         throw new InvalidCredentialsException("Invalid username or password.");
+    }
+
+    public Users findById(Long userId) {
+        System.out.println(userId);
+        return userRepository.findById(userId).orElse(null);
     }
 }

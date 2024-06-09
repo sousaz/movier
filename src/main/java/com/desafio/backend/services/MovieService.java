@@ -19,12 +19,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.desafio.backend.models.Details;
 import com.desafio.backend.models.Movies;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.lang.Long;
 
 @Service
 public class MovieService {
@@ -48,7 +47,7 @@ public class MovieService {
     @Value("${apiToken}")
     private String apiToken;
 
-    public List<Movie> listMostPopularMovie(UUID userId){
+    public List<Movie> listMostPopularMovie(Long userId){
         String url = "https://api.themoviedb.org/3/movie/popular?api_key="+apiKey+"&language=pt-BR";
         Movies movies = makeRequest(url, Movies.class);
         List<Movie> moviesResponse = new ArrayList<>();
@@ -61,7 +60,7 @@ public class MovieService {
         return moviesResponse;
     }
 
-    public Movie getDetailsOfMovie(Long id, UUID userId){
+    public Movie getDetailsOfMovie(Long id, Long userId){
         String url = "https://api.themoviedb.org/3/movie/"+id+"?api_key="+apiKey+"&language=pt-BR";
         MovieApiResponse movie =  makeRequest(url, MovieApiResponse.class);
         boolean favorited = this.favoriteService.getFavorite(userId, movie.getId());
@@ -83,11 +82,11 @@ public class MovieService {
         return moviesResponse;
     }
 
-    public List<FavoriteToggleDTO> favoriteMovie(UUID id){
+    public List<FavoriteToggleDTO> favoriteMovie(Long id){
         return this.favoriteMapper.toDTOs(this.favoriteService.favoriteMovies(id));
     }
 
-    public List<WatchedDTO> watchedMovie(UUID id){
+    public List<WatchedDTO> watchedMovie(Long id){
         List<Reviews> reviews = this.reviewService.watchedMovies(id);
         List<WatchedDTO> watchedMovies = new ArrayList<>();
         reviews.forEach(review -> {

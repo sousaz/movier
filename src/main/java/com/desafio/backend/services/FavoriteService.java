@@ -10,18 +10,18 @@ import com.desafio.backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
+import java.lang.Long;
 
 @Service
 public class FavoriteService {
     private final FavoritesRepository favoriteRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private final FavoriteToggleMapper favoriteMapper;
 
-    public FavoriteService(FavoritesRepository favoriteRepository, UserRepository userRepository, FavoriteToggleMapper favoriteMapper) {
+    public FavoriteService(FavoritesRepository favoriteRepository, UserService userService, FavoriteToggleMapper favoriteMapper) {
         this.favoriteRepository = favoriteRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.favoriteMapper = favoriteMapper;
     }
     public Favorites toggleFavorite(FavoriteToggleDTO favorites) {
@@ -30,7 +30,7 @@ public class FavoriteService {
             favoriteRepository.delete(favorite);
             return null;
         }
-        Users user = userRepository.findById(favorites.userId());
+        Users user = userService.findById(favorites.userId());
         try {
             return favoriteRepository.save(favoriteMapper.toEntity(favorites, user));
         } catch (Exception e) {
@@ -38,12 +38,12 @@ public class FavoriteService {
         }
     }
 
-    public boolean getFavorite(UUID userId, Long movieId) {
+    public boolean getFavorite(Long userId, Long movieId) {
         Favorites favorite = favoriteRepository.findByMovieIdAndUserId(movieId, userId);
         return favorite != null;
     }
 
-    public List<Favorites> favoriteMovies(UUID userId) {
+    public List<Favorites> favoriteMovies(Long userId) {
         return favoriteRepository.findByUserId(userId);
     }
 }

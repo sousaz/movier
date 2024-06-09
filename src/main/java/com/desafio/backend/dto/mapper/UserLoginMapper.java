@@ -15,6 +15,7 @@ public class UserLoginMapper {
         user.setId(userDTO.id());
         user.setUsername(userDTO.username());
         user.setPassword(userDTO.password());
+        user.setEmail(userDTO.email());
         return user;
     }
 

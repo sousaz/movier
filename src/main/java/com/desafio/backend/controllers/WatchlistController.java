@@ -7,7 +7,7 @@ import com.desafio.backend.services.WatchlistService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+import java.lang.Long;
 
 @RestController
 @RequestMapping("/api/watchlist")
@@ -24,7 +24,7 @@ public class WatchlistController {
     }
 
     @GetMapping("/{id}")
-    public List<WatchlistResponseDTO> getWatchlist(@PathVariable UUID id) {
+    public List<WatchlistResponseDTO> getWatchlist(@PathVariable Long id) {
         return this.watchlistService.listWatchlist(id);
     }
 

@@ -1,21 +1,16 @@
 package com.desafio.backend.controllers;
 
 import com.desafio.backend.dto.FavoriteToggleDTO;
-import com.desafio.backend.dto.ReviewCreationResponseDTO;
 import com.desafio.backend.dto.SearchRequestDTO;
 import com.desafio.backend.dto.WatchedDTO;
-import com.desafio.backend.entities.Favorites;
 import com.desafio.backend.interfaces.Movie;
-import com.desafio.backend.models.MovieApiResponse;
-import com.desafio.backend.models.Movies;
 import org.springframework.web.bind.annotation.*;
 
-import com.desafio.backend.models.Details;
 import com.desafio.backend.services.MovieService;
 
 
 import java.util.List;
-import java.util.UUID;
+import java.lang.Long;
 
 
 @RestController
@@ -28,12 +23,12 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    public List<Movie> listMostPopularMovie(@PathVariable UUID id) {
+    public List<Movie> listMostPopularMovie(@PathVariable Long id) {
         return movieService.listMostPopularMovie(id);
     }
 
     @GetMapping("/{id}/{userId}")
-    public Movie getDetailsOfMovie(@PathVariable Long id, @PathVariable UUID userId){
+    public Movie getDetailsOfMovie(@PathVariable Long id, @PathVariable Long userId){
         return movieService.getDetailsOfMovie(id, userId);
     }
 
@@ -43,12 +38,12 @@ public class MovieController {
     }
 
     @GetMapping("/favorite/{id}")
-    public List<FavoriteToggleDTO> favoriteMovie(@PathVariable UUID id){
+    public List<FavoriteToggleDTO> favoriteMovie(@PathVariable Long id){
         return movieService.favoriteMovie(id);
     }
 
     @GetMapping("/watched/{id}")
-    public List<WatchedDTO> watchedMovie(@PathVariable UUID id){
+    public List<WatchedDTO> watchedMovie(@PathVariable Long id){
         return movieService.watchedMovie(id);
     }
     

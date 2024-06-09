@@ -13,6 +13,7 @@ public class WatchlistMapper {
         watchlistEntity.setMovieId(watchlist.movieId());
         watchlistEntity.setPoster_Path(watchlist.poster_path());
         watchlistEntity.setUser(user);
+        watchlistEntity.setTitle(watchlist.title());
         return watchlistEntity;
     }
 

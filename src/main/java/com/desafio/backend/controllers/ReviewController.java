@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+import java.lang.Long;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -22,7 +22,9 @@ public class ReviewController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ReviewCreationResponseDTO createReview(@RequestBody ReviewCreationRequestDTO review){
-        return this.reviewService.createReview(review);
+        ReviewCreationResponseDTO newReview = this.reviewService.createReview(review);
+        this.reviewService.notifyAll(review.movieId());
+        return newReview;
     }
 
     @GetMapping("/list")
@@ -31,7 +33,7 @@ public class ReviewController {
     }
 
     @PutMapping("/rating/{userId}/{movieId}/{rating}")
-    public ReviewCreationResponseDTO updateRating(@PathVariable UUID userId, @PathVariable Long movieId, @PathVariable Double rating){
+    public ReviewCreationResponseDTO updateRating(@PathVariable Long userId, @PathVariable Long movieId, @PathVariable Double rating){
         return this.reviewService.updateRating(userId, movieId, rating);
     }
 }

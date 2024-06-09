@@ -1,5 +1,4 @@
 package com.desafio.backend.dto;
 
-import java.util.UUID;
 
-public record FavoriteToggleDTO(UUID userId, Long movieId, String poster_path) {}
+public record FavoriteToggleDTO(Long userId, Long movieId, String poster_path) {}
