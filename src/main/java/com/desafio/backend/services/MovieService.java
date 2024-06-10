@@ -48,7 +48,7 @@ public class MovieService {
     private String apiToken;
 
     public List<Movie> listMostPopularMovie(Long userId){
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key="+apiKey+"&language=pt-BR";
+        String url = "https://api.themoviedb.org/3/movie/popular?api_key="+apiKey+"&language=en";
         Movies movies = makeRequest(url, Movies.class);
         List<Movie> moviesResponse = new ArrayList<>();
         movies.getMovies().forEach(movie -> {
@@ -61,7 +61,7 @@ public class MovieService {
     }
 
     public Movie getDetailsOfMovie(Long id, Long userId){
-        String url = "https://api.themoviedb.org/3/movie/"+id+"?api_key="+apiKey+"&language=pt-BR";
+        String url = "https://api.themoviedb.org/3/movie/"+id+"?api_key="+apiKey+"&language=en";
         MovieApiResponse movie =  makeRequest(url, MovieApiResponse.class);
         boolean favorited = this.favoriteService.getFavorite(userId, movie.getId());
         List<ReviewCreationResponseDTO> reviews = this.reviewService.listAllReviewsByMovieId(movie.getId());
@@ -70,7 +70,7 @@ public class MovieService {
     }
 
     public List<Movie> searchMovies(SearchRequestDTO search){
-        String url = "https://api.themoviedb.org/3/search/movie?query="+search.search()+"&language=pt-BR?api_key="+apiKey;
+        String url = "https://api.themoviedb.org/3/search/movie?query="+search.search()+"&language=en?api_key="+apiKey;
         Movies movies = makeRequest(url, Movies.class);
         List<Movie> moviesResponse = new ArrayList<>();
         movies.getMovies().forEach(movie -> {

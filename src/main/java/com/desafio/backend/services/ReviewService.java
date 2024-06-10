@@ -36,9 +36,7 @@ public class ReviewService implements Subject {
     }
 
     public ReviewCreationResponseDTO createReview(ReviewCreationRequestDTO review){
-        System.out.println(review.userId());
         Users user = this.userService.findById(review.userId());
-        System.out.println(user);
         Reviews foundReview = this.reviewRepository.findByMovieIdAndUserId(review.movieId(), user.getId());
         Reviews newReview = this.reviewMapper.toEntity(review, user);
         if(foundReview != null){

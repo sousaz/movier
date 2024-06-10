@@ -32,7 +32,7 @@ public class UserService {
     }
     public UserLoginResponseDTO login(UserLoginRequestDTO user){
         Middleware middleware = Middleware.link(
-                new UsernameMiddleware(userRepository),
+                new UsernameMiddleware(this),
                 new PasswordMiddleware(userMapper.toEntity(user)));
         Users authenticatedUser = middleware.check(userMapper.toEntity(user));
         if(authenticatedUser != null)
@@ -41,7 +41,10 @@ public class UserService {
     }
 
     public Users findById(Long userId) {
-        System.out.println(userId);
         return userRepository.findById(userId).orElse(null);
+    }
+
+    public Users findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
